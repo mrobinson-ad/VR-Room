@@ -7,8 +7,14 @@ using UnityEngine.Video;
 public class SkyboxManager : MonoBehaviour
 {
 
+    private int currentIndex = -1;
     public List<Image> fadeImages;
+
+    public GameObject nextSphere;
+    public GameObject previousSphere;
     public List<GameObject> socketedItems;
+    public List<Texture2D> photos;
+    public List<Material> skyMaterials;
     public GameObject room;
     public Material roomBG;
     public Material videoMat;
@@ -34,7 +40,7 @@ public class SkyboxManager : MonoBehaviour
     private IEnumerator FadeInOut(Material mat, GameObject sphere)
     {
 
-       yield return FadeImagesWithHeight(0, 0.3f, fadeTime);
+        yield return FadeImagesWithHeight(0, 0.3f, fadeTime);
 
         RenderSettings.skybox = mat;
         videoPlayer.Stop();
@@ -49,7 +55,7 @@ public class SkyboxManager : MonoBehaviour
     private IEnumerator FadeToRoom()
     {
         yield return FadeImagesWithHeight(0, 0.3f, fadeTime);
-        
+
         RenderSettings.skybox = roomBG;
         room.SetActive(true);
         videoPlayer.Stop();
@@ -58,7 +64,7 @@ public class SkyboxManager : MonoBehaviour
             go.SetActive(true);
 
         yield return FadeImagesWithHeight(0.3f, 0, fadeTime);
-    
+
     }
 
     private IEnumerator FadeToVideo(VideoClip clip)
@@ -75,6 +81,7 @@ public class SkyboxManager : MonoBehaviour
 
         yield return FadeImagesWithHeight(0.3f, 0, fadeTime);
     }
+
 
     private IEnumerator FadeImagesWithHeight(float startHeight, float targetHeight, float duration)
     {
@@ -105,5 +112,42 @@ public class SkyboxManager : MonoBehaviour
             size.y = targetHeight;
             rectTransforms[i].sizeDelta = size;
         }
+    }
+
+    public void OnNextClicked()
+    {
+        currentIndex = GetWrappedIndex(currentIndex + 1);
+        StartCoroutine(FadeInOut());
+    }
+
+    public void OnPreviousClicked()
+    {
+        currentIndex = GetWrappedIndex(currentIndex - 1);
+        StartCoroutine(FadeInOut());
+    }
+
+    private IEnumerator FadeInOut()
+    {
+        // Fade out the current sphere
+        yield return FadeImagesWithHeight(0, 0.3f, fadeTime);
+
+        RenderSettings.skybox = skyMaterials[currentIndex];
+        videoPlayer.Stop();
+
+        nextSphere.GetComponent<Renderer>().material.SetTexture("_BaseMap", photos[GetWrappedIndex(currentIndex + 1)]);
+        previousSphere.GetComponent<Renderer>().material.SetTexture("_BaseMap", photos[GetWrappedIndex(currentIndex - 1)]);
+
+        foreach (GameObject go in socketedItems)
+            go.SetActive(false);
+        room.SetActive(false);
+        
+        yield return FadeImagesWithHeight(0.3f, 0, fadeTime);
+    }
+
+    private int GetWrappedIndex(int index)
+    {
+        if (index < 0) return photos.Count - 1;
+        if (index >= photos.Count) return 0;
+        return index;
     }
 }
