@@ -7,6 +7,10 @@ public class ToggleMenu : MonoBehaviour
 {
     public XRRayInteractor leftController;
     public GameObject menu;
+
+    /// <summary>
+    /// Toggles the left hand menu UI
+    /// </summary>
     public void Toggle()
     {
         menu.SetActive(!menu.activeSelf);

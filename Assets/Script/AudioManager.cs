@@ -23,13 +23,19 @@ public class AudioManager : MonoBehaviour
             }
         }
 
-
+    /// <summary>
+    /// Toggles playing status
+    /// </summary>
     public void TogglePlay()
     {
         bool isPlaying = !IsPlaying();
         SetPlay(isPlaying);
     }
 
+    /// <summary>
+    /// Plays or pauses depending on playing status
+    /// </summary>
+    /// <param name="playAudio"></param>
     public void SetPlay(bool playAudio)
     {
         if (playAudio)
@@ -41,6 +47,11 @@ public class AudioManager : MonoBehaviour
             audioSource.Pause();
         }
     }
+    
+    /// <summary>
+    /// Returns playing status
+    /// </summary>
+    /// <returns></returns>
     public bool IsPlaying()
     {
         return audioSource.isPlaying;

@@ -14,6 +14,9 @@ public class PlayMusic : MonoBehaviour
 
     bool isPlaying = false;
 
+    /// <summary>
+    /// Toggles playing status
+    /// </summary>
     public void Toggle()
     {
         if (socket.hasSelection)
@@ -23,12 +26,18 @@ public class PlayMusic : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spins the vinyl when music is playing
+    /// </summary>
     private void Update()
     {
         if (isPlaying)
             attach.Rotate(0, Time.deltaTime * 30, 0);
     }
 
+    /// <summary>
+    /// Sets the clip attached to the vinyl on the audio manager when socketed
+    /// </summary>
     public void SetClip()
     {
         XRBaseInteractable vinyl = (XRBaseInteractable)socket.interactablesSelected[0];
@@ -36,6 +45,9 @@ public class PlayMusic : MonoBehaviour
         AudioManager.Instance.audioSource.clip = clip;
     }
 
+    /// <summary>
+    /// If vinyls are active unsets the clip from the audio manager when unsocketed
+    /// </summary>
     public void UnsetClip()
     {
         if (vinylRef.activeInHierarchy)
@@ -49,6 +61,11 @@ public class PlayMusic : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// Lerps the position of the handle needle depending on the play status
+    /// </summary>
+    /// <param name="c"></param>
+    /// <returns></returns>
     private IEnumerator SetHandle(bool c)
     {
         float startRotation = handle.localEulerAngles.y;
