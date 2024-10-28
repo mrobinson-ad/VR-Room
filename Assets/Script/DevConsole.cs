@@ -9,18 +9,26 @@ public class DevConsole : MonoBehaviour
     [SerializeField] private TextMeshProUGUI vert_display;
     [SerializeField] private TextMeshProUGUI tri_display;
 
+    [SerializeField] private GameObject devConsole;
+
     private void Start()
     {
-        InvokeRepeating("DisplayFrameRate", 1, 1);
-        InvokeRepeating("CountAllTriangles", 1, 5);
+        InvokeRepeating("DisplayFrameRate", 1, 1); //Shows FPS refreshed every second
+        InvokeRepeating("CountAllTriangles", 1, 5); // Shows Triangles and vertices, refreshed every 5 seconds
     }
 
+    /// <summary>
+    /// Displays FPS
+    /// </summary>
     private void DisplayFrameRate()
     {
         float current = (int)(1f / Time.unscaledDeltaTime);
         fps_display.text = current.ToString() + " FPS";
     }
 
+    /// <summary>
+    /// Displays the number of triangles and vertices currently rendered in the scene
+    /// </summary>
     private void CountAllTriangles()
     {
         int totalTriangles = 0;
@@ -36,5 +44,10 @@ public class DevConsole : MonoBehaviour
         }
         tri_display.text = totalTriangles.ToString() + " Triangles";
         vert_display.text = totalVerticles.ToString() + " Vertices";
+    }
+
+    public void ToggleConsole()
+    {
+        devConsole.SetActive(!devConsole.activeSelf);
     }
 }
