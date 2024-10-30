@@ -12,7 +12,7 @@ public class PlayMusic : MonoBehaviour
 
     public Transform handle;
 
-    bool isPlaying = false;
+    public bool isPlaying = false;
 
     /// <summary>
     /// Toggles playing status
@@ -79,6 +79,7 @@ public class PlayMusic : MonoBehaviour
             yield return null; 
         }
         handle.localEulerAngles = new Vector3(handle.localEulerAngles.x, endRotation, handle.localEulerAngles.z);
-        AudioManager.Instance.TogglePlay();
+        if (isPlaying != AudioManager.Instance.IsPlaying())
+            AudioManager.Instance.TogglePlay();
     }
 }

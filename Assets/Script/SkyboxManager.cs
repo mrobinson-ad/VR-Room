@@ -8,7 +8,7 @@ using TMPro;
 public class SkyboxManager : MonoBehaviour
 {
 
-    private int currentIndex = -1;
+    public int currentIndex = -1;
     public List<Image> fadeImages;
 
     public GameObject nextSphere;
@@ -25,6 +25,7 @@ public class SkyboxManager : MonoBehaviour
     public Material videoMat;
     public GameObject dirLight;
     public VideoPlayer videoPlayer;
+    public PlayMusic musicPlayer;
 
     [SerializeField] float fadeTime = 0.5f;
 
@@ -49,7 +50,7 @@ public class SkyboxManager : MonoBehaviour
     /// Blinks and sets the room gameObjects and the directional light to active
     /// </summary>
     /// <returns></returns>
-    private IEnumerator FadeToRoom()
+    public IEnumerator FadeToRoom()
     {
         yield return Blink(0, 0.3f, fadeTime);
 
@@ -65,8 +66,13 @@ public class SkyboxManager : MonoBehaviour
         nextText.text = pointNames[GetWrappedIndex(currentIndex + 1)];
         previousSphere.GetComponent<Renderer>().material.SetTexture("_BaseMap", photos[GetWrappedIndex(currentIndex - 1)]);
         previousText.text = pointNames[GetWrappedIndex(currentIndex - 1)];
+
         yield return Blink(0.3f, 0, fadeTime);
 
+        if (AudioManager.Instance.IsPlaying() != musicPlayer.isPlaying)
+        {
+                musicPlayer.Toggle();
+        }
     }
 
     /// <summary>
@@ -74,7 +80,7 @@ public class SkyboxManager : MonoBehaviour
     /// </summary>
     /// <param name="clip"></param>
     /// <returns></returns>
-    private IEnumerator FadeToVideo(VideoClip clip)
+    public IEnumerator FadeToVideo(VideoClip clip)
     {
         videoPlayer.clip = clip;
         yield return Blink(0, 0.3f, fadeTime);
@@ -149,7 +155,7 @@ public class SkyboxManager : MonoBehaviour
     /// Blinks and sets the skybox and the sphere's material and text based on the current index
     /// </summary>
     /// <returns></returns>
-    private IEnumerator FadeInOut()
+    public IEnumerator FadeInOut()
     {
         yield return Blink(0, 0.3f, fadeTime);
 
@@ -175,7 +181,7 @@ public class SkyboxManager : MonoBehaviour
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    private int GetWrappedIndex(int index)
+    public int GetWrappedIndex(int index)
     {
         if (index < 0) return photos.Count - 1;
         if (index >= photos.Count) return 0;
