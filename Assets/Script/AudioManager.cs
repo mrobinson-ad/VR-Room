@@ -8,20 +8,40 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; set; }
 
     public AudioSource audioSource;
+    public AudioMixer audioMixer;
+    private float musicVolume;
 
-
-    private void Awake() 
+    public float MusicVolume
+    {
+        get => musicVolume;
+        set
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-            }
+            musicVolume = Mathf.Log(value) * 20;
+            PlayerPrefs.SetFloat("Master", value);
+            audioMixer.SetFloat("Master", musicVolume);
         }
+    }
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        MusicVolume = PlayerPrefs.GetFloat("Master", 0.5f);
+    }
+
+    private void Start() 
+        {
+            audioMixer.SetFloat("Master", MusicVolume);
+        }
+
 
     /// <summary>
     /// Toggles playing status
@@ -47,7 +67,7 @@ public class AudioManager : MonoBehaviour
             audioSource.Pause();
         }
     }
-    
+
     /// <summary>
     /// Returns playing status
     /// </summary>
