@@ -17,7 +17,6 @@ public class SkyboxManagerTests
     [UnitySetUp]
      public IEnumerator SetUp()
     {
-        // Load the scene containing the SkyboxManager and other components
         SceneManager.LoadScene("Visit Room", LoadSceneMode.Single);
         yield return new WaitForSeconds(0.1f);
     }
@@ -25,7 +24,6 @@ public class SkyboxManagerTests
     [TearDown]
     public void TearDown()
     {
-        // Unload the scene after each test to ensure a clean state
         SceneManager.UnloadSceneAsync("Visit Room");
     }
 
@@ -54,7 +52,7 @@ public class SkyboxManagerTests
             Assert.IsTrue(item.activeSelf);
         }
 
-        // Validate UI text updates
+       
         Assert.AreEqual("Chambre", skyboxManager.currentText.text);
         Assert.AreEqual(skyboxManager.pointNames[0], skyboxManager.nextText.text);
         Assert.AreEqual(skyboxManager.pointNames[skyboxManager.photos.Count -1], skyboxManager.previousText.text);
