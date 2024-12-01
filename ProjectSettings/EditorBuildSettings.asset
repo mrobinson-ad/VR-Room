@@ -8,9 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Baba Room.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Visit Room.unity
     guid: 27b15159d187468458b68263ee0323b7
+  - enabled: 1
+    path: Assets/Scenes/EscapeRoom.unity
+    guid: 1ff0e74f7a1bb3e4bb2c63fbb51c67c6
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: ed72be55522c8448bae8b0d66fa21adf,
       type: 2}
